@@ -21,6 +21,7 @@ class TopLevelController:
                 self.deck_controller.check_for_drop(encounter)
             else:
                 print("You beat the gauntlet!!!")
+                break
 
     def begin_battle(self, enemy_characters):
         describe_characters(enemy_characters)
@@ -65,6 +66,7 @@ class BattleController:
         for character_in_play in self.characters:
             character_in_play.take_turn(self.characters)
             self.check_for_death()
+            self.reform_ranks()
 
     def check_for_death(self):
         for character_in_play in self.characters:
@@ -92,7 +94,7 @@ class BattleController:
 
 class DraftController:
     def __init__(self, player):
-        self.character_count = 1
+        self.character_count = 3
         self.card_draw_count = 3
         self.player = player
 
@@ -144,19 +146,19 @@ class DeckController:
         self.player = player
 
     def check_for_drop(self, encounter):
-        drop = random.choices(encounter.loot_table.values(), encounter.loot_table.values())
+        drop = random.choices([x for x in encounter.loot_table.keys()], [x for x in encounter.loot_table.values()])[0]
         if drop is not None:
             self.gain_new_card(drop)
 
     def gain_new_card(self, card):
-        if card not in self.player.deck.values():
+        if card.name not in self.player.deck.keys():
             card.print_description()
             replaceable_cards = {x: self.player.deck[x] for x in self.player.deck.keys()
                                  if self.player.deck[x].card_type == card.card_type}
             confirm = False
             while not confirm:
                 card_to_replace_name = input("Choose one of: " + '|'.join(replaceable_cards))
-                if card_to_replace_name in [x.name for x in replaceable_cards]:
+                if card_to_replace_name in replaceable_cards:
                     replaceable_cards[card_to_replace_name].print_description()
                     confirm = input("Type yes to confirm: ") == "yes"
                     if confirm:

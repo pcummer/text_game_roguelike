@@ -8,13 +8,13 @@ class Player:
         self.discard = {}
 
     def default_deck(self):
-        for card in random.choices(cards.available_character_cards.values(), k=5):
+        for card in random.sample([x for x in cards.available_character_cards.values()], k=5):
             self.gain_card(card)
 
-        for card in random.choices(cards.available_technique_cards.values(), k=5):
+        for card in random.sample([x for x in cards.available_technique_cards.values()], k=5):
             self.gain_card(card)
 
-        for card in random.choices(cards.available_equipment_cards.values(), k=5):
+        for card in random.sample([x for x in cards.available_equipment_cards.values()], k=5):
             self.gain_card(card)
 
     def draw(self, card_type, number_of_cards):

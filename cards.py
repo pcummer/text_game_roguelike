@@ -184,7 +184,7 @@ class Saboteur(RogueCharacterCard):
         stat_change = character.stats['spell_damage']*stat_scaling
         stat_loss = effect.Effect(attack_damage=-stat_change,
                                   spell_damage=-stat_change,
-                                  speed=-stat_change)
+                                  speed=-stat_change).return_effect()
         ability_range = 3
         targets = [x for x in targets if (x.stats['enemy'] != character.stats['enemy']) and
                    ((x.stats['rank'] + character.stats['rank']) <= ability_range)]
@@ -204,7 +204,7 @@ class Shadow(RogueCharacterCard):
         aggro_reduction = 10
         aggro_scaling = 1.0
         aggro_change = aggro_reduction + character.stats['spell_damage'] * aggro_scaling
-        aggro_effect = effect.Effect(aggro=-aggro_change)
+        aggro_effect = effect.Effect(aggro=-aggro_change).return_effect()
         character.effect(aggro_effect)
         print(character.get_name() + ' faded into the shadows dropping ' + str(aggro_change) + ' aggro')
 

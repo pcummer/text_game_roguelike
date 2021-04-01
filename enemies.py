@@ -124,9 +124,18 @@ class CultistEncounter(Encounter):
 
 
 class Gauntlet:
-    def __init__(self):
-        self.encounters = []
+    def __init__(self, encounters):
+        self.encounters = encounters
 
     def next_encounter(self):
         if len(self.encounters) > 0:
             return self.encounters.pop(0)
+
+
+class SewerGauntlet(Gauntlet):
+    def __init__(self):
+        encounters = [
+            SlimeEncounter(),
+            CultistEncounter()
+        ]
+        super().__init__(encounters)
